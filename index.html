@@ -3,11 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <title>Page Title</title>
+  <link rel="stylesheet" href="style.css">
   <script src="RockPaperScissors.js"></script>
 </head>
 <body>
-  <script>
-    // Your JavaScript goes here!
-  </script>
+  <div class="main-div">
+      <div class = "header">
+          Play five rounds of Rock Paper Scissors.
+      </div>
+      <div class="moves">
+          <button id = "rock", class = "button"> R </button>
+          <button id = "paper", class = "button"> P </button>
+          <button id = "scissors", class = "button"> S </button>
+      </div>
+  </div>
+  <div > 
+    <button id = "reset", class = "button"> Reset </button>
+  </div>
+  
+
+  <div class = "resultText">
+    <stack>Round: </stack><stack id = "round">0</stack>
+  </div>
+  <div class = "resultText">
+    <stack>Player score: </stack><stack id = "playerScore">0</stack>
+  </div>
+  <div class = "resultText">
+    <stack>Computer score: </stack><stack id = "computerScore">0</stack>
+  </div>
+  <div class = "resultText"> 
+    <stack id = "result"> </stack>
+  </div>
+
+  
 </body>
 </html>

@@ -1,57 +1,106 @@
-function getComputerChoice() {
-    
-    const selections = ["Rock", "Paper", "Scissors"];
-    return selections[Math.floor(Math.random() * selections.length)];
-  }
-   
-function playRound(playerSelection, computerSelection) {
+document.addEventListener("click", buttonClicked);
 
-    let playerSelectionLowered = playerSelection.toLowerCase();
+function buttonClicked(e){
+    if (e.srcElement.id == ""){
+        return;
+    }
+    playRound(e);    
+}
 
+function playRound(e) {
+
+    //get player and computer selection
+    let playerSelectionLowered = getPlayerSelection(e);
+    let computerSelection = getComputerChoice();
+
+    const resultMessage = document.querySelector("#result");
+    const round = document.querySelector("#round");
+    const playerScore =document.querySelector("#playerScore");
+    const computerScore =document.querySelector("#computerScore");  
+
+    //reset 
+    if (e.srcElement.id == "reset"){
+        
+        resultMessage.innerHTML = "";
+        round.innerHTML = "0";
+        playerScore.innerHTML = "0";
+        computerScore.innerHTML = "0";
+        return;
+    }
+
+    //read existing scores 
+    roundValue  =  parseInt(round.innerHTML);
+    playerScoreValue =  parseInt(playerScore.innerHTML);
+    computerScoreValue =  parseInt(computerScore.innerHTML);
+
+    //restart rounds from 1 if round 5 done
+    if (roundValue ==5){
+        roundValue = 0;
+        playerScoreValue = 0;
+        computerScoreValue = 0; 
+        resultMessage.innerHTML = "";
+    }
+
+    //compare player vs computer moves 
     if (playerSelectionLowered == "rock") { 
 
         if (computerSelection == "Rock"){
-            return "Draw";}
+            result = "Draw";}
         else if (computerSelection == "Paper"){
-            return "Computer Wins";}
+            result = "Computer Wins" ;}
         else {
-            return "Player Wins";}
+            result = "Player Wins" ;}
     }
     if (playerSelectionLowered == "paper") { 
 
         if (computerSelection == "Paper"){
-            return "Draw";}
+            result ="Draw";}
         else if (computerSelection == "Scissors"){
-            return "Computer Wins";}
+            result= "Computer Wins" ;}
         else {
-            return "Player Wins";}
+            result= "Player Wins";}
     }
     if (playerSelectionLowered == "scissors") { 
 
         if (computerSelection == "scissors"){
-            return "Draw";}
+            result =  "Draw";}
         else if (computerSelection == "Rock"){
-            return "Computer Wins";}
+            result= "Computer Wins";}
         else {
-            return "Player Wins";}
+            result = "Player Wins";}
+    }
+
+    //count round, player & computer cores
+    roundValue++;
+    if (result == "Player Wins"){
+        playerScoreValue++;
+    }else if (result == "Computer Wins"){
+        computerScoreValue++;
+    }
+  
+    //display result 
+    round.innerHTML = roundValue;
+    playerScore.innerHTML =playerScoreValue;
+    computerScore.innerHTML = computerScoreValue;
+
+    if (roundValue ==5){
+        if (playerScoreValue > computerScoreValue){
+            resultMessage.innerHTML = "Player Won!";
+        }else if (computerScoreValue > playerScoreValue){
+            resultMessage.innerHTML = "Computer Won!";
+        }else {
+            resultMessage.innerHTML = "Draw!"
+        }
     }
 }
 
-function game(){
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for (let round = 0; round <5; round++){
-
-        let playerSelection = prompt("Rock, Paper or Scissors?");
-        let computerSelection = getComputerChoice();
-                
-        let roundResult = playRound(playerSelection, computerSelection)
-
-        if (roundResult == "Player Wins") {playerScore++}
-        if (roundResult == "Computer Wins") {computerScore++}
-        console.log(roundResult, " Player:", playerScore, " Computer: ",computerScore );
-    }
+function getPlayerSelection(e){
+    const playerSelection = e.srcElement.id;
+    return playerSelection;
 }
+
+function getComputerChoice() {
+    const selections = ["Rock", "Paper", "Scissors"];
+    return selections[Math.floor(Math.random() * selections.length)];
+  }
    
-game();
