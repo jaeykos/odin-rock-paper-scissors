@@ -1,106 +1,114 @@
-document.addEventListener("click", buttonClicked);
-
-function buttonClicked(e){
-    if (e.srcElement.id == ""){
-        return;
-    }
-    playRound(e);    
+class Player{
+    score = 0;
 }
 
-function playRound(e) {
+class Computer extends Player{
+    getMove(){
+        const selections = ["rock", "paper", "scissors"];
+        return selections[Math.floor(Math.random() * selections.length)];
+    }
+}
 
-    //get player and computer selection
-    let playerSelectionLowered = getPlayerSelection(e);
-    let computerSelection = getComputerChoice();
+class Person extends Player{
+    getMove(e){
+        const playerSelection = e.srcElement.id;
+        return playerSelection;
+    }
+};
 
-    const resultMessage = document.querySelector("#result");
-    const round = document.querySelector("#round");
-    const playerScore =document.querySelector("#playerScore");
-    const computerScore =document.querySelector("#computerScore");  
+const computer1 = new Computer();
+const person1 = new Person();
+let roundValue = 0;
+let gameOver = false
 
-    //reset 
-    if (e.srcElement.id == "reset"){
-        
-        resultMessage.innerHTML = "";
-        round.innerHTML = "0";
-        playerScore.innerHTML = "0";
-        computerScore.innerHTML = "0";
+
+document.addEventListener("click",(e)=>{
+
+    if (e.target.id == "reset"){ //reset 
+        resetRoundAndScores()
+        updateDisplay()
         return;
-    }
+    }else if (e.target.className == "button"){ //play
 
-    //read existing scores 
-    roundValue  =  parseInt(round.innerHTML);
-    playerScoreValue =  parseInt(playerScore.innerHTML);
-    computerScoreValue =  parseInt(computerScore.innerHTML);
+        if (gameOver ==true){
+            resetRoundAndScores();
+            gameOver = false;
+        }
+        //get player and computer selection
+        let personMove = person1.getMove(e);
+        let computerMove = computer1.getMove();
 
-    //restart rounds from 1 if round 5 done
-    if (roundValue ==5){
-        roundValue = 0;
-        playerScoreValue = 0;
-        computerScoreValue = 0; 
-        resultMessage.innerHTML = "";
-    }
+        playRound(personMove, computerMove);
 
+        //count round, player & computer cores
+        roundValue++;
+
+        if (result == "Player Wins"){
+            person1.score++;
+        }else if (result == "Computer Wins"){
+            computer1.score++;
+        }
+        resultMsg = result + " this round!"
+        
+
+        //display result 
+        updateDisplay()
+        
+        if (roundValue == 5){
+            if (person1.score >  computer1.score){
+                resultMsgL = "Player Won!";
+            }else if ( computer1.score > person1.score){
+                resultMsg = "Computer Won!";
+            }else {
+                resultMsg = "Draw!"
+            }
+            gameOver = true;
+            updateDisplay()
+        }
+        ;}
+});
+
+function updateDisplay(){
+    round.innerHTML = roundValue;
+    playerScore.innerHTML =person1.score;
+    computerScore.innerHTML = computer1.score;
+    resultMessage.innerHTML = resultMsg;
+}
+
+function resetRoundAndScores(){
+    roundValue = 0;
+    person1.score = 0;
+    computer1.score =  0; 
+}
+
+function playRound(personMove, computerMove){    
     //compare player vs computer moves 
-    if (playerSelectionLowered == "rock") { 
+    if (personMove == "rock") { 
 
-        if (computerSelection == "Rock"){
+        if (computerMove == "rock"){
             result = "Draw";}
-        else if (computerSelection == "Paper"){
+        else if (computerMove == "paper"){
             result = "Computer Wins" ;}
         else {
             result = "Player Wins" ;}
     }
-    if (playerSelectionLowered == "paper") { 
+    if (personMove == "paper") { 
 
-        if (computerSelection == "Paper"){
+        if (computerMove == "paper"){
             result ="Draw";}
-        else if (computerSelection == "Scissors"){
+        else if (computerMove == "scissors"){
             result= "Computer Wins" ;}
         else {
             result= "Player Wins";}
     }
-    if (playerSelectionLowered == "scissors") { 
+    if (personMove == "scissors") { 
 
-        if (computerSelection == "scissors"){
+        if (computerMove == "scissors"){
             result =  "Draw";}
-        else if (computerSelection == "Rock"){
+        else if (computerMove == "rock"){
             result= "Computer Wins";}
         else {
             result = "Player Wins";}
     }
-
-    //count round, player & computer cores
-    roundValue++;
-    if (result == "Player Wins"){
-        playerScoreValue++;
-    }else if (result == "Computer Wins"){
-        computerScoreValue++;
-    }
-  
-    //display result 
-    round.innerHTML = roundValue;
-    playerScore.innerHTML =playerScoreValue;
-    computerScore.innerHTML = computerScoreValue;
-
-    if (roundValue ==5){
-        if (playerScoreValue > computerScoreValue){
-            resultMessage.innerHTML = "Player Won!";
-        }else if (computerScoreValue > playerScoreValue){
-            resultMessage.innerHTML = "Computer Won!";
-        }else {
-            resultMessage.innerHTML = "Draw!"
-        }
-    }
+    return result;
 }
-
-function getPlayerSelection(e){
-    const playerSelection = e.srcElement.id;
-    return playerSelection;
-}
-
-function getComputerChoice() {
-    const selections = ["Rock", "Paper", "Scissors"];
-    return selections[Math.floor(Math.random() * selections.length)];
-  }
-   
